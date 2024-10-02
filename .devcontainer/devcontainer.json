@@ -1,0 +1,79 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/javascript-node
+{
+  "name": "python",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  // Features to add to the dev container. More info: https://containers.dev/features.
+  "features": {
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.12.7"
+    },
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": "true",
+      "configureZshAsDefaultShell": "true",
+      "upgradePackages": "false",
+      "installOhMyZsh": "true",
+      "installOhMyZshConfig": "true"
+    },
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "moby": "false"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "files.autoSave": "afterDelay",
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true,
+        "editor.formatOnType": true,
+        "terminal.integrated.defaultProfile.linux": "zsh",
+        "[json]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode",
+          "editor.formatOnType": true
+        },
+        "[python]": {
+          "editor.defaultFormatter": "ms-python.black-formatter",
+          "editor.codeActionsOnSave": {
+            "source.organizeImports.ruff": "explicit"
+          },
+          "editor.formatOnSave": true,
+          "editor.formatOnType": true
+        },
+        "[prisma]": {
+          "editor.defaultFormatter": "Prisma.prisma",
+          "editor.formatOnType": true
+        }
+      },
+      "extensions": [
+        "formulahendry.code-runner",
+        "EditorConfig.EditorConfig",
+        "esbenp.prettier-vscode",
+        "ms-python.python",
+        "ms-python.black-formatter",
+        "ms-python.debugpy",
+        "charliermarsh.ruff",
+        "Prisma.prisma"
+      ]
+    }
+  },
+  // if you want to run a command after the container is created with postgres, redis
+  // "onCreateCommand": "cd .docker && docker-compose up -d",
+  "postCreateCommand": "pip install -r requirements.txt",
+  "forwardPorts": [8000, 5432, 6379],
+  "portsAttributes": {
+    "8000": {
+      "label": "webserver",
+      "onAutoForward": "notify"
+    },
+    "5432": {
+      "label": "postgres",
+      "onAutoForward": "notify"
+    },
+    "6379": {
+      "label": "redis",
+      "onAutoForward": "notify"
+    }
+  }
+}
